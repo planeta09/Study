@@ -324,7 +324,8 @@ public class Main implements Animal.IAnimalDeadListener {
     }
 
     public static void main(String[] args) {
-        new Main();
+       // new Main();
+        Input.readFromFile();
     }
 
     public void jumpAll() {
