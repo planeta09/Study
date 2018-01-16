@@ -1,0 +1,123 @@
+package animals;
+
+import interfaces.ISoundable;
+import interfaces.Jumpable;
+
+abstract public class Animal implements ISoundable, Jumpable, Comparable<Animal>{
+    @Override
+    public int compareTo(Animal o) {
+        return (int)Math.ceil(this.getSize()-o.getSize());
+    }
+
+    private String nickName;
+    private double size;// size in metres
+    private String gender;// male or female
+    private long age;// milliseconds
+    public String type;
+    private double fill;
+    private long lastFeedTime;
+    private double countOfFood;
+    boolean isAlive = true;
+    private IAnimalDeadListener animalDeadListener;
+
+    public Animal(String nickName, double size) {
+        super();
+        this.nickName = nickName;
+        this.size = size;
+        setFill(60);
+    }
+
+    public interface IAnimalDeadListener {
+        void onAnimalDead(Animal animal);
+    }
+
+    public void setAnimalDeadListener(IAnimalDeadListener animalDeadListener) {
+        this.animalDeadListener = animalDeadListener;
+    }
+
+    public void feed(double countOfFood) {
+        setFill(getFill() + countOfFood);
+
+    }
+
+    @Override
+    public double jump() {
+        return size * 10 / (size * size);
+    }
+
+    @Override
+    public String toString() {
+        return "Animal " + type + " " + getNickName() + " size " + getSize() + "\n";
+    }
+
+    public String getNickName() {
+        return nickName;
+    }
+
+    public double getSize() {
+        return size;
+    }
+
+    public void setSize(double size) {
+        this.size = size;
+    }
+
+    public double getFill() {
+        long sec = (System.currentTimeMillis() - lastFeedTime) / 1000;
+        fill = fill - sec / 4;
+        if (fill < 0) {
+            isAlive = false;
+            if (animalDeadListener != null) {
+                animalDeadListener.onAnimalDead(this);
+                System.out.println("animal " + this.getNickName() + " is dead");
+            }
+        }
+        isAlive = false;
+        return fill;
+    }
+
+    public void setFill(double fill) {
+        this.fill = fill;
+        lastFeedTime = System.currentTimeMillis();
+    }
+
+    public long getLastFeedTime() {
+        return lastFeedTime;
+    }
+
+    public void setLastFeedTime(long lastFeedTime) {
+        this.lastFeedTime = lastFeedTime;
+    }
+
+    public double getCountOfFood() {
+        return countOfFood;
+    }
+
+    public void setCountOfFood(double countOfFood) {
+        this.countOfFood = countOfFood;
+    }
+
+    public void setAlive(boolean alive) {
+        if (getFill() >= 0) {
+            isAlive = false;
+        } else {
+            isAlive = true;
+        }
+    }
+    public String getGender() {
+        return gender;
+    }
+
+    public void setGender(String gender) {
+        this.gender = gender;
+    }
+
+    public long getAge() {
+        return age;
+    }
+
+    public void setAge(long age) {
+        this.age = age;
+    }
+
+}
