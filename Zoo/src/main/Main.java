@@ -2,6 +2,8 @@ package main;
 
 import animals.*;
 import error.AnimalCreationException;
+import error.AnimalInvalidNameException;
+import error.AnimalInvalidSizeException;
 import input.Input;
 import interfaces.ISoundable;
 
@@ -47,6 +49,12 @@ public class Main implements Animal.IAnimalDeadListener {
                         newAnimal = createAnimal();
                     } catch (InputMismatchException e) {
                         System.out.println("NumberFormatException. Enter int instead of string");
+                    } catch (AnimalInvalidNameException e) {
+                        System.out.println(e.getMessage());
+                    } catch (AnimalInvalidSizeException e) {
+                        System.out.println(e.getMessage());
+                    } catch (AnimalCreationException e) {
+                        System.out.println(e.getMessage());
                     }
                     if (newAnimal == null) {
                         continue;
@@ -114,7 +122,7 @@ public class Main implements Animal.IAnimalDeadListener {
         //System.out.println("animal " + animal.getNickName() + " is dead");
     }
 
-    public Animal createAnimal() {
+    public Animal createAnimal() throws AnimalCreationException {
         Animal animal = null;
         for (; ; ) {
             System.out.println("Choose the number to create...\n1- WOLF\n2- cat\n3-bird\n4-rabbit" +
@@ -126,31 +134,40 @@ public class Main implements Animal.IAnimalDeadListener {
                     // wolf.setAnimalDeadListener(this);
                     animal = wolf;
                     if (animal != null && animal.getNickName().isEmpty()) {
-                        throw new AnimalCreationException();
+                        throw new AnimalInvalidNameException();
+                    }
+                    if (animal.getSize() <= 0) {
+                        throw new AnimalInvalidSizeException();
                     }
                 case "2":
                     Cat cat = Cat.createCat();
                     animal = cat;
                     if (animal != null && animal.getNickName().isEmpty()) {
-                        throw new AnimalCreationException();
+                        throw new AnimalInvalidNameException();
+                    }
+                    if (animal.getSize() <= 0) {
+                        throw new AnimalInvalidSizeException();
                     }
                 case "3":
                     Bird bird = Bird.createBird();
                     animal = bird;
                     if (animal != null && animal.getNickName().isEmpty()) {
-                        throw new AnimalCreationException();
+                        throw new AnimalInvalidNameException();
+                    }
+                    if (animal.getSize() <= 0) {
+                        throw new AnimalInvalidSizeException();
                     }
                 case "4":
                     Rabbit rabbit = Rabbit.createRabbit();
                     animal = rabbit;
                     if (animal != null && animal.getNickName().isEmpty()) {
-                        throw new AnimalCreationException();
+                        throw new AnimalInvalidNameException();
+                    }
+                    if (animal.getSize() <= 0) {
+                        throw new AnimalInvalidSizeException();
                     }
                 case "r":
                     animal = null;
-                    if (animal != null && animal.getNickName().isEmpty()) {
-                        throw new AnimalCreationException();
-                    }
             }
 
             break;

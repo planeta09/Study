@@ -1,7 +1,11 @@
 package error;
 
-public class AnimalCreationException extends RuntimeException{
+public class AnimalCreationException extends Exception {
     public AnimalCreationException(){
-        super("Name of animal can't be empty!");
+        super("Animal can't be created!");
+    }
+
+    public AnimalCreationException(String message) {
+        super(message);
     }
 }
