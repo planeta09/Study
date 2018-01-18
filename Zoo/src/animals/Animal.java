@@ -3,6 +3,7 @@ package animals;
 import error.AnimalCreationException;
 import interfaces.ISoundable;
 import interfaces.Jumpable;
+import io.Logger;
 
 abstract public class Animal implements ISoundable, Jumpable, Comparable<Animal> {
     @Override
@@ -38,7 +39,7 @@ abstract public class Animal implements ISoundable, Jumpable, Comparable<Animal>
 
     public void feed(double countOfFood) {
         setFill(getFill() + countOfFood);
-
+        Logger.log(this+" fed "+countOfFood);
     }
 
     public static Animal convertFromString(String str)
@@ -64,7 +65,7 @@ abstract public class Animal implements ISoundable, Jumpable, Comparable<Animal>
 
     @Override
     public String toString() {
-        return "Animal " + type + " " + getNickName() + " size " + getSize() + "\n";
+        return "Animal " + type + " " + getNickName() + " size " + getSize();
     }
 
     public String getNickName() {

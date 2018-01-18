@@ -7,6 +7,7 @@ import error.AnimalInvalidSizeException;
 import input.Input;
 import interfaces.ISoundable;
 import io.FileImporter;
+import io.Logger;
 
 import java.util.Map;
 import java.util.*;
@@ -25,6 +26,7 @@ public class Main implements Animal.IAnimalDeadListener {
 
         while (userInput) {
             System.out.println("\nChoose the number to do anything...");
+            System.out.println("0- import animals from file.csv");
             System.out.println("1- watch the fill of animal");
             System.out.println("2- to fill  the animal");
             System.out.println("3- to create  the animal");
@@ -33,6 +35,21 @@ public class Main implements Animal.IAnimalDeadListener {
             int answer = Main.in.nextInt();
             Main.in.nextLine();
             switch (answer) {
+                case 0:
+                    try {
+                        List<Animal> arrAnimal = FileImporter.importFromFile
+                                ("animals.csv");
+                        Logger.log("Successful import of file");
+                        for (Animal an : arrAnimal) {
+                            sortToCage(an);
+                            System.out.println(an.toString());
+                        }
+
+                    } catch (AnimalCreationException e) {
+                        System.out.println("File converting error");
+                        Logger.log("File converting error");
+                    }
+                    break;
                 case 1:
                     showAnimalInfo();
                     break;
@@ -48,6 +65,7 @@ public class Main implements Animal.IAnimalDeadListener {
                     Animal newAnimal = null;
                     try {
                         newAnimal = createAnimal();
+                        Logger.log("Animal created " + newAnimal.toString());
                     } catch (InputMismatchException e) {
                         System.out.println("NumberFormatException. Enter int instead of string");
                     } catch (AnimalInvalidNameException e) {
@@ -60,31 +78,7 @@ public class Main implements Animal.IAnimalDeadListener {
                     if (newAnimal == null) {
                         continue;
                     }
-                    if (newAnimal instanceof Bird) {
-                        ExtensibleCage<Bird> cage =
-                                (ExtensibleCage<Bird>) cages.get(Bird.class.getSimpleName());
-                        cage.addAnimal((Bird) newAnimal);
-                        System.out.println("The size of cageBird = " +
-                                cages.get(Bird.class.getSimpleName()).cage.size());
-                    } else if (newAnimal instanceof Predator) {
-                        ((ExtensibleCage<Mammal>) cages.get(Mammal.class.getSimpleName()))
-                                .addAnimal((Predator) newAnimal);
-                        System.out.println("The size of cagePredator = " +
-                                cages.get(Mammal.class.getSimpleName()).cage.size());
-                    } else {
-                        double rndCage = Math.random();
-                        if (rndCage >= 0.6 && rndCage < 1) {
-                            ((ExtensibleCage<Herbivore>) cages.get(Herbivore.class.getSimpleName()))
-                                    .addAnimal((Herbivore) newAnimal);
-                            System.out.println("The size of cageHerbivore = " +
-                                    cages.get(Herbivore.class.getSimpleName()).cage.size());
-                        } else {
-                            ((ExtensibleCage<Mammal>) cages.get(Mammal.class.getSimpleName()))
-                                    .addAnimal((Mammal) newAnimal);
-                            System.out.println("The size of cagePredator = " +
-                                    cages.get(Mammal.class.getSimpleName()).cage.size());
-                        }
-                    }
+                   sortToCage(newAnimal);
                     break;
                 case 4:
 
@@ -118,6 +112,46 @@ public class Main implements Animal.IAnimalDeadListener {
 
     }
 
+    public static void main(String[] args) {
+        Logger.log("Start");
+        new Main();
+        in.close();
+        Logger.log("finish");
+        //Input.readFromFile();
+    }
+
+    public void sortToCage(Animal animal) {
+        if (animal instanceof Bird) {
+            ExtensibleCage<Bird> cage =
+                    (ExtensibleCage<Bird>) cages.get(Bird.class.getSimpleName());
+            cage.addAnimal((Bird) animal);
+            Logger.log(Bird.class.getSimpleName()+" created");
+            System.out.println("The size of cageBird = " +
+                    cages.get(Bird.class.getSimpleName()).cage.size());
+        } else if (animal instanceof Predator) {
+            ((ExtensibleCage<Mammal>) cages.get(Mammal.class.getSimpleName()))
+                    .addAnimal((Predator) animal);
+            Logger.log(Mammal.class.getSimpleName()+" created");
+            System.out.println("The size of cagePredator = " +
+                    cages.get(Mammal.class.getSimpleName()).cage.size());
+        } else {
+            double rndCage = Math.random();
+            if (rndCage >= 0.6 && rndCage < 1) {
+                ((ExtensibleCage<Herbivore>) cages.get(Herbivore.class.getSimpleName()))
+                        .addAnimal((Herbivore) animal);
+                Logger.log(Herbivore.class.getSimpleName()+" created");
+                System.out.println("The size of cageHerbivore = " +
+                        cages.get(Herbivore.class.getSimpleName()).cage.size());
+            } else {
+                ((ExtensibleCage<Mammal>) cages.get(Mammal.class.getSimpleName()))
+                        .addAnimal((Mammal) animal);
+                Logger.log(Mammal.class.getSimpleName()+" created");
+                System.out.println("The size of cagePredator = " +
+                        cages.get(Mammal.class.getSimpleName()).cage.size());
+            }
+        }
+    }
+
     @Override
     public void onAnimalDead(Animal animal) {
         //System.out.println("animal " + animal.getNickName() + " is dead");
@@ -140,6 +174,7 @@ public class Main implements Animal.IAnimalDeadListener {
                     if (animal.getSize() <= 0) {
                         throw new AnimalInvalidSizeException();
                     }
+                    break;
                 case "2":
                     Cat cat = Cat.createCat();
                     animal = cat;
@@ -149,6 +184,7 @@ public class Main implements Animal.IAnimalDeadListener {
                     if (animal.getSize() <= 0) {
                         throw new AnimalInvalidSizeException();
                     }
+                    break;
                 case "3":
                     Bird bird = Bird.createBird();
                     animal = bird;
@@ -158,6 +194,7 @@ public class Main implements Animal.IAnimalDeadListener {
                     if (animal.getSize() <= 0) {
                         throw new AnimalInvalidSizeException();
                     }
+                    break;
                 case "4":
                     Rabbit rabbit = Rabbit.createRabbit();
                     animal = rabbit;
@@ -167,6 +204,7 @@ public class Main implements Animal.IAnimalDeadListener {
                     if (animal.getSize() <= 0) {
                         throw new AnimalInvalidSizeException();
                     }
+                    break;
                 case "r":
                     animal = null;
             }
@@ -322,19 +360,6 @@ public class Main implements Animal.IAnimalDeadListener {
                 break;
         }
         showAnimalInfo();
-    }
-
-    public static void main(String[] args) {
-       // new Main();
-        //Input.readFromFile();
-        try {
-            List<Animal> arrAnimal= FileImporter.importFromFile("animals.csv");
-            for (Animal an:arrAnimal){
-                System.out.println(an.toString());
-            }
-        } catch (AnimalCreationException e) {
-            System.out.println("File converting error");
-        }
     }
 
     public void jumpAll() {
