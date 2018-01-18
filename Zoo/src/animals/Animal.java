@@ -1,12 +1,13 @@
 package animals;
 
+import error.AnimalCreationException;
 import interfaces.ISoundable;
 import interfaces.Jumpable;
 
-abstract public class Animal implements ISoundable, Jumpable, Comparable<Animal>{
+abstract public class Animal implements ISoundable, Jumpable, Comparable<Animal> {
     @Override
     public int compareTo(Animal o) {
-        return (int)Math.ceil(this.getSize()-o.getSize());
+        return (int) Math.ceil(this.getSize() - o.getSize());
     }
 
     private String nickName;
@@ -38,6 +39,22 @@ abstract public class Animal implements ISoundable, Jumpable, Comparable<Animal>
     public void feed(double countOfFood) {
         setFill(getFill() + countOfFood);
 
+    }
+
+    public static Animal convertFromString(String str)
+            throws AnimalCreationException {
+        String[] arrStr = str.split(",");
+        switch (arrStr[0]) {
+            case "wolf":
+                return new Wolf(arrStr[1], Double.parseDouble(arrStr[2]));
+            case "cat":
+                return new Cat(arrStr[1], new Double(arrStr[2]));
+            case "rabbit":
+                return new Rabbit(arrStr[1], new Double(arrStr[2]));
+            case "bird":
+                return new Bird(arrStr[1], new Double(arrStr[2]));
+        }
+        throw new AnimalCreationException();
     }
 
     @Override
@@ -104,6 +121,7 @@ abstract public class Animal implements ISoundable, Jumpable, Comparable<Animal>
             isAlive = true;
         }
     }
+
     public String getGender() {
         return gender;
     }

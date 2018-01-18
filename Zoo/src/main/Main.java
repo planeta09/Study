@@ -6,6 +6,7 @@ import error.AnimalInvalidNameException;
 import error.AnimalInvalidSizeException;
 import input.Input;
 import interfaces.ISoundable;
+import io.FileImporter;
 
 import java.util.Map;
 import java.util.*;
@@ -325,7 +326,15 @@ public class Main implements Animal.IAnimalDeadListener {
 
     public static void main(String[] args) {
        // new Main();
-        Input.readFromFile();
+        //Input.readFromFile();
+        try {
+            List<Animal> arrAnimal= FileImporter.importFromFile("animals.csv");
+            for (Animal an:arrAnimal){
+                System.out.println(an.toString());
+            }
+        } catch (AnimalCreationException e) {
+            System.out.println("File converting error");
+        }
     }
 
     public void jumpAll() {
