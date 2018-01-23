@@ -1,0 +1,10 @@
+2018_01_21 20:58:02.703 Start
+2018_01_21 20:58:19.660 Animal created Animal wolf 432 size 4324.0
+2018_01_21 20:58:19.676 Mammal created
+2018_01_21 21:00:16.143 Animal created Animal rabbit сава size 213.0
+2018_01_21 21:00:16.159 Herbivore created
+2018_01_21 21:03:10.781 Start
+2018_01_21 21:03:21.233 Animal created Animal cat draw size 213.0
+2018_01_21 21:03:21.233 Mammal created
+2018_01_21 21:03:30.873 Animal created Animal rabbit fdasf size 213.0
+2018_01_21 21:03:30.889 Mammal created

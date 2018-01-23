@@ -19,11 +19,9 @@ public class ExtensibleCage<T extends Animal> implements Animal.IAnimalDeadListe
         Collections.sort(cage);
         StringBuilder sb = new StringBuilder();
         if (cage.size() == 0) {
-            sb.append("Cage ");
-            sb.append(getClass().getSimpleName());
-            sb.append(" is empty\n");
+            sb.append("Cage is empty\n");
         } else {
-            sb.append("Cage for :" + getClass().getSimpleName());
+            sb.append("Cage ");
             Iterator<? extends Animal> itr = cage.iterator();
             while (itr.hasNext()) {
                 Animal animal = itr.next(); //in fact it's our foreach
@@ -32,7 +30,7 @@ public class ExtensibleCage<T extends Animal> implements Animal.IAnimalDeadListe
                 } else {
                     sb.append(" ");
                     sb.append(animal.toString());
-                    sb.append("fill = " + animal.getFill());
+                    sb.append(" fill = " + animal.getFill());
                     sb.append("\n");
                 }
             }
