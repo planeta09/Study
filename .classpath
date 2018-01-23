@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="src" path="Zoo/src"/>
+	<classpathentry kind="lib" path="D:/MonThesd/Java Libraries/tinylog-1.3.2.jar"/>
+	<classpathentry kind="lib" path="D:/MonThesd/Java Libraries/tinylog-1.3.2-javadoc.jar"/>
+	<classpathentry kind="lib" path="D:/MonThesd/Java Libraries/tinylog-1.3.2-sources.jar"/>
+	<classpathentry kind="output" path="Zoo/out/production/Zoo"/>
+</classpath>

@@ -1,3 +1,5 @@
+/*Nastya has created this*/
+
 package main;
 
 import animals.*;
@@ -7,9 +9,16 @@ import error.AnimalInvalidSizeException;
 import input.Input;
 import interfaces.ISoundable;
 import io.FileImporter;
-import io.Logger;
+
 
 import java.util.Map;
+
+import org.pmw.tinylog.Configurator;
+import org.pmw.tinylog.Level;
+import org.pmw.tinylog.Logger;
+import org.pmw.tinylog.writers.ConsoleWriter;
+import org.pmw.tinylog.writers.FileWriter;
+
 import java.util.*;
 
 public class Main implements Animal.IAnimalDeadListener {
@@ -39,7 +48,7 @@ public class Main implements Animal.IAnimalDeadListener {
                     try {
                         List<Animal> arrAnimal = FileImporter.importFromFile
                                 ("animals.csv");
-                        Logger.log("Successful import of file");
+                        
                         for (Animal an : arrAnimal) {
                             sortToCage(an);
                             System.out.println(an.toString());
@@ -47,7 +56,7 @@ public class Main implements Animal.IAnimalDeadListener {
 
                     } catch (AnimalCreationException e) {
                         System.out.println("File converting error");
-                        Logger.log("File converting error");
+                        
                     }
                     break;
                 case 1:
@@ -65,7 +74,7 @@ public class Main implements Animal.IAnimalDeadListener {
                     Animal newAnimal = null;
                     try {
                         newAnimal = createAnimal();
-                        Logger.log("Animal created " + newAnimal.toString());
+                        
                     } catch (InputMismatchException e) {
                         System.out.println("NumberFormatException. Enter int instead of string");
                     } catch (AnimalInvalidNameException e) {
@@ -113,10 +122,15 @@ public class Main implements Animal.IAnimalDeadListener {
     }
 
     public static void main(String[] args) {
-        Logger.log("Start");
-        new Main();
+        Configurator.defaultConfig()
+                .writer(new ConsoleWriter())
+                .addWriter(new FileWriter("foo.bar"))
+                .activate();
+        Logger.warn("Hello Tinylog");
+
+//        new Main();
         in.close();
-        Logger.log("finish");
+       
         //Input.readFromFile();
     }
 
@@ -125,13 +139,13 @@ public class Main implements Animal.IAnimalDeadListener {
             ExtensibleCage<Bird> cage =
                     (ExtensibleCage<Bird>) cages.get(Bird.class.getSimpleName());
             cage.addAnimal((Bird) animal);
-            Logger.log(Bird.class.getSimpleName()+" created");
+            
             System.out.println("The size of cageBird = " +
                     cages.get(Bird.class.getSimpleName()).cage.size());
         } else if (animal instanceof Predator) {
             ((ExtensibleCage<Mammal>) cages.get(Mammal.class.getSimpleName()))
                     .addAnimal((Predator) animal);
-            Logger.log(Mammal.class.getSimpleName()+" created");
+           
             System.out.println("The size of cagePredator = " +
                     cages.get(Mammal.class.getSimpleName()).cage.size());
         } else {
@@ -139,13 +153,13 @@ public class Main implements Animal.IAnimalDeadListener {
             if (rndCage >= 0.6 && rndCage < 1) {
                 ((ExtensibleCage<Herbivore>) cages.get(Herbivore.class.getSimpleName()))
                         .addAnimal((Herbivore) animal);
-                Logger.log(Herbivore.class.getSimpleName()+" created");
+              
                 System.out.println("The size of cageHerbivore = " +
                         cages.get(Herbivore.class.getSimpleName()).cage.size());
             } else {
                 ((ExtensibleCage<Mammal>) cages.get(Mammal.class.getSimpleName()))
                         .addAnimal((Mammal) animal);
-                Logger.log(Mammal.class.getSimpleName()+" created");
+               
                 System.out.println("The size of cagePredator = " +
                         cages.get(Mammal.class.getSimpleName()).cage.size());
             }
