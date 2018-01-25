@@ -67,6 +67,10 @@ public class ExtensibleCage<T extends Animal> implements Animal.IAnimalDeadListe
         }
     }
 
+    public List<T> getCage() {
+        return cage;
+    }
+
     private static class SizeComparator implements Comparator<Animal> {
         @Override
         public int compare(Animal o1, Animal o2) {

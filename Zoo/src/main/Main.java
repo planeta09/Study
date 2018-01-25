@@ -13,6 +13,7 @@ import io.FileImporter;
 
 import java.util.Map;
 
+import io.XmlSaver;
 import org.pmw.tinylog.Configurator;
 import org.pmw.tinylog.Level;
 import org.pmw.tinylog.Logger;
@@ -41,10 +42,9 @@ public class Main implements Animal.IAnimalDeadListener {
             System.out.println("3- to create  the animal");
             System.out.println("4- to play the competition");
             System.out.println("5- REMOVE animal\n");
-            int answer = Main.in.nextInt();
-            Main.in.nextLine();
+            String answer = Main.in.nextLine();
             switch (answer) {
-                case 0:
+                case "0":
                     try {
                         List<Animal> arrAnimal = FileImporter.importFromFile
                                 ("animals.csv");
@@ -59,10 +59,10 @@ public class Main implements Animal.IAnimalDeadListener {
                         
                     }
                     break;
-                case 1:
+                case "1":
                     showAnimalInfo();
                     break;
-                case 2:
+                case "2":
                     if (cages.get("Mammal").cage.isEmpty() && cages.get("Bird").cage.isEmpty()
                             && cages.get("Herbivore").cage.isEmpty()) {
                         System.out.println("The animal is absent in cages ");
@@ -70,7 +70,7 @@ public class Main implements Animal.IAnimalDeadListener {
                         feedAnimal();
                     }
                     break;
-                case 3: //adding animal
+                case "3": //adding animal
                     Animal newAnimal = null;
                     try {
                         newAnimal = createAnimal();
@@ -89,11 +89,10 @@ public class Main implements Animal.IAnimalDeadListener {
                     }
                    sortToCage(newAnimal);
                     break;
-                case 4:
-
+                case "4":
                     jumpAll();
                     break;
-                case 5:
+                case "5":
                     if (cages.get(Mammal.class.
 
                             getSimpleName()).cage.size() == 0 &&
@@ -118,7 +117,7 @@ public class Main implements Animal.IAnimalDeadListener {
                     break;
             }
         }
-
+        XmlSaver.save(cages);
     }
 
     public static void main(String[] args) {
@@ -127,11 +126,9 @@ public class Main implements Animal.IAnimalDeadListener {
                 .addWriter(new FileWriter("foo.bar"))
                 .activate();
         Logger.warn("Hello Tinylog");
+        new Main();
 
-//        new Main();
         in.close();
-       
-        //Input.readFromFile();
     }
 
     public void sortToCage(Animal animal) {
